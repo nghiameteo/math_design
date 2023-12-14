@@ -38,7 +38,7 @@ const ArticleItem = ({ article }: OwnProps) => {
     }
     return (<div>
         <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
-            <StyledPaper sx={{ my: 1, mx: 'auto', p: 2, }}>
+            <StyledPaper sx={{ my: 1, mx: 'auto', p: 2, minWidth: 300, maxWidth: 'none'}}>
                 <Grid container wrap="nowrap" spacing={2}>
                     <Grid item>
                         <Link to={`/${article.author.username}`}><Avatar alt="Avatar" src={`${article.author.image}`} /></Link>

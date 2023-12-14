@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getLogOut, loadCurrentToken, selectIsAuthorized, selectToken, selectUser } from "../user/userSlice";
 
@@ -18,8 +18,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { User } from "../../app/models";
-import { Grid, styled } from "@mui/material";
+import { BottomNavigation, BottomNavigationAction, Grid, styled } from "@mui/material";
 import { Row } from "antd";
+import UserProfile from "../user/user-profile";
+import SettingsIcon from '@mui/icons-material/Settings';
+import HomeIcon from '@mui/icons-material/Home';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FollowTheSignsIcon from '@mui/icons-material/FollowTheSigns';
 
 const pages = ['Home', 'Sign In', 'Sign Up', 'New Article'];
 const pagesAuthorize = ['Home', 'Sign In', 'Sign Up', 'New Article'];
@@ -71,6 +76,7 @@ const Layout = () => {
     const currentUser = useAppSelector(selectUser);
     const currentTokenAvailable = useAppSelector(selectToken);
     const token = localStorage.getItem('token');
+    const navigate= useNavigate();
 
     useEffect(() => {
         if (!currentTokenAvailable && !!token) {
@@ -110,11 +116,14 @@ const Layout = () => {
     }
     return (
         <Grid container
+
             spacing={0}
             direction="column"
             alignItems="center"
             sx={{ minHeight: '100vh' }}>
             <AppBar position="static">
+            {/* <BottomNavigation
+                sx={{ position: 'fixed', top: 0, left: 0, right: 0, backgroundColor: 'lightgreen' }} */}
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         {/* icon */}
@@ -195,9 +204,9 @@ const Layout = () => {
                                 textDecoration: 'none',
                             }}
                         >
-                            LOGO
+                            Conduit
                         </Typography>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', textDecoration: 'none' }}>
                             {pages.map((page) => (
 
                                 <Button
@@ -206,9 +215,9 @@ const Layout = () => {
                                     sx={{ my: 0, color: 'white', display: 'block' }}
                                 >
                                     {page == 'Home' && <MyButton href="/" variant="contained">{page}</MyButton>}
-                                    {page == 'Sign In' && !isAuthorized && <MyButton href="/login" variant="contained">{page}</MyButton>}
-                                    {page == 'Sign Up' && !isAuthorized && <MyButton href="/register" variant="contained">{page}</MyButton>}
-                                    {page == 'New Article' && isAuthorized && <MyButton variant="contained"><Link to="/editor">{page}</Link></MyButton>}
+                                    {page == 'Sign In' && !isAuthorized && <MyButton onClick={()=>navigate("/login")} variant="contained">{page}</MyButton>}
+                                    {page == 'Sign Up' && !isAuthorized && <MyButton onClick={()=>navigate("/register")} variant="contained">{page}</MyButton>}
+                                    {page == 'New Article' && isAuthorized && <MyButton variant="contained" onClick={()=>navigate("/editor")}>{page}</MyButton>}
                                 </Button>
                             ))}
                         </Box>
@@ -265,7 +274,7 @@ const Layout = () => {
                     <Typography
                         variant="h6"
                         noWrap
-                        component="a"                        
+                        component="a"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -281,6 +290,36 @@ const Layout = () => {
                 </Container>
             </Box>
             <Outlet />
+            <Box sx={{minHeight:56}}></Box>
+            <BottomNavigation
+                sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, backgroundColor: 'lightgreen' }}
+                showLabels
+            >
+                <BottomNavigationAction
+                    label="Home"
+                    value="home"
+                    icon={<HomeIcon />}
+                    onClick={()=>navigate(`/`)}
+                />
+                <BottomNavigationAction
+                    label="Favorites"
+                    value="favorites"
+                    icon={<FavoriteIcon />}
+                    onClick={()=>navigate(`/${currentUser?.username}/favorites`)}
+                />
+                <BottomNavigationAction
+                    label="Follow"
+                    value="follow"
+                    icon={<FollowTheSignsIcon />}
+                    onClick={()=>navigate(`/`)}
+                />
+                <BottomNavigationAction
+                    label="Setting"
+                    value="setting"
+                    icon={<SettingsIcon />}
+                    onClick={()=>navigate(`/settings`)}
+                />                
+            </BottomNavigation>
         </Grid>
     )
 }

@@ -102,13 +102,15 @@ const Feed = () => {
                 <TagFilter />
             </Col>
         </Row> */}
-        <Grid container spacing={0} sx={{ mx: "auto", ms: 'auto' }}>
-
-            <Grid xs={4} item>
+        <Grid container spacing={0} sx={{ mx: "auto", ms: 'auto', maxWidth: 'xl', display: 'flex',
+    gridAutoFlow: 'column' }}>
+            
+            <Grid xs={2} item sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
                 <Item><TagFilter /></Item>
             </Grid>
             
-            <Grid xs={8} item>
+
+            <Grid xs={10} item >
                 <Item>
                     <Tabs activeKey={activeTab} items={tabList} onChange={key => setActiveTab(key)} />
                     {isLoading && <>Loading...</>}

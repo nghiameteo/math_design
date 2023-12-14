@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from 'yup'
 
 import { Article, NewArticle } from "../../app/models";
-import { Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 
 interface OwnProps {
@@ -102,7 +102,7 @@ const EditArticle = ({ onSubmit, isLoading, article }: OwnProps) => {
 
         //     </Form>
         // </Formik>
-        <div>
+        <Box sx={{maxWidth: 'xl'}}>
             <Typography variant="h4" gutterBottom sx={{ m: 1, p: 1, color: '#003300', textAlign: 'center', }}>Update Article</Typography>
             <form onSubmit={formik.handleSubmit}>
                 <TextField
@@ -154,7 +154,7 @@ const EditArticle = ({ onSubmit, isLoading, article }: OwnProps) => {
                     {isLoading ? 'Loading...' : 'Publish Article'}
                 </Button>
             </form>
-        </div>
+        </Box>
     )
 }
 
