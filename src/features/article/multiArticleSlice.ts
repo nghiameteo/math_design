@@ -46,9 +46,9 @@ function* fetchArticlesSaga(action: PayloadAction<MultiArticlePagingParams | und
 export const toggleMultiArticleFavoritesArticleAsync = createAction<FavoritesArticleParams>('multiArticle/toggleFavoritesArticleAsync');
 
 const toggleMultiArticleFavorites = async (params: FavoritesArticleParams): Promise<SingleArticleResponse> => {
-    const url = `/articles/${params?.slug}/favorite`;
+    const url = `/articles/${params?.article.slug}/favorite`;
     if (!params?.isFavorites) {
-        return (await api.post<SingleArticleResponse>(url, { slug: params?.slug })).data;
+        return (await api.post<SingleArticleResponse>(url, { slug: params?.article.slug })).data;
     }
     else {
         return (await api.delete<SingleArticleResponse>(url)).data;
@@ -57,6 +57,12 @@ const toggleMultiArticleFavorites = async (params: FavoritesArticleParams): Prom
 
 function* toggleMultiArticleFavoritesSaga(action: PayloadAction<FavoritesArticleParams>) {
     try {
+        var newFavorited = !action.payload.article.favorited;
+        yield put(changeFavorite({
+            ...action.payload.article,
+            favorited: newFavorited,
+            favoritesCount: action.payload.article.favoritesCount + (newFavorited ? 1 : -1)
+        }));
         const response: SingleArticleResponse = yield call(toggleMultiArticleFavorites, action.payload);
         yield put(changeFavorite(response.article));
     }

@@ -150,7 +150,7 @@ export interface UpdateArticleParams {
 }
 
 export interface FavoritesArticleParams {
-    slug: string;
+    article: Article;
     isFavorites: boolean;
 }
 
