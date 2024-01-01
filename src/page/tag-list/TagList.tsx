@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Chip, Stack } from "@mui/material";
 
 interface OwnProps {
@@ -13,14 +12,11 @@ const TagList = ({ tags }: OwnProps) => {
           key={tag}
           label={tag}
           variant="outlined"
+          size="small"
           sx={{
-            textTransform: "none",
-            fontSize: "0.8rem",
-            fontWeight: 300,
             color: "#aaa",
             cursor: "pointer",
           }}
-          
         />
       ))}
     </Stack>

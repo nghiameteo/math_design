@@ -2,7 +2,7 @@ import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import { useState } from "react";
 import { Article } from "../../app/models";
-import ArticleItem from "../article-item/ArticleItem";
+import ArticleItem2 from "../article-item/ArticleItem2";
 import styles from "./ArticleList.module.css";
 
 interface OwnProps {
@@ -23,7 +23,7 @@ const ArticleList = ({ articles, total, page, pageSize }: OwnProps) => {
   return (
     <>
       {articles.map((article) => (
-        <ArticleItem key={article.slug} article={article} />
+        <ArticleItem2 key={article.slug} article={article} />
       ))}
 
       <Pagination
