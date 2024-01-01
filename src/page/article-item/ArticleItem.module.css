@@ -1,0 +1,6 @@
+.box {
+  overflow: hidden !important;
+}
+.cardEnd {
+  box-shadow: none !important;
+}

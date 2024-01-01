@@ -4,8 +4,9 @@ import {
   searchTag,
   selectMultiTag,
 } from "../../filter/filterSlice";
-import { SetStateAction, useEffect, useState } from "react";
-import { Chip, Stack, Box } from "@mui/material";
+import { useEffect } from "react";
+import { Chip, Stack, Box, Typography } from "@mui/material";
+import styles from "./TagFilter.module.css";
 
 const TagFilter = () => {
   const dispatch = useAppDispatch();
@@ -21,22 +22,26 @@ const TagFilter = () => {
 
   return (
     <>
+      <Box
+        className={styles.boxHeader}
+        display={"flex"}
+        flexDirection={"column"}
+        sx={{ gap: "1rem" }}
+        justifyContent={"flex-start"}
+      >
+        <Typography
+          className={styles.chipFirst}>
+            Popular Tags
+          </Typography>
 
-      <Box display={'flex'} flexDirection={"column"} sx={{gap: '1rem'}} justifyContent={'flex-start'}>
-        <Chip label={"Popular Tag"} variant="outlined" />
-        <Stack direction="row" spacing={1} display={"flex"} flexWrap={"wrap"}>
+        <Stack direction="row" gap={0.4} display={"flex"} flexWrap={"wrap"}>
           {tags.map((tag) => (
             <Chip
+              className={styles.chipSecond}
               key={tag}
               label={tag}
-              onClick={()=>onSearchTagChange(tag)}
-              sx={{
-                textTransform: "none",
-                fontSize: "0.8rem",
-                fontWeight: 300,
-                color: "#aaa",
-                cursor: "pointer",
-              }}
+              size="small"
+              onClick={() => onSearchTagChange(tag)}
             />
           ))}
         </Stack>

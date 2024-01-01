@@ -1,0 +1,15 @@
+.paginationLayout {
+  margin-top: 0.5rem;
+
+  .paginationItemActive {
+    border: none !important;
+    background-color: green !important;
+    color: white !important;
+    margin: 0;
+  }
+  .paginationItemNonActive {
+    border: 1px solid #5cb85c !important;
+    color: #5cb85c !important;
+    margin: 0;
+  }
+}

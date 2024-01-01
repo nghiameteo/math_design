@@ -1,43 +1,40 @@
-import { useEffect } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  getLogOut,
-  loadCurrentToken,
-  selectIsAuthorized,
-  selectToken,
-  selectUser,
-} from "../user/userSlice";
-
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { User } from "../../app/models";
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Grid,
-  styled,
-} from "@mui/material";
-import { Row } from "antd";
-import UserProfile from "../user/user-profile";
-import Link from "@mui/material/Link";
-import SettingsIcon from "@mui/icons-material/Settings";
-import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import HomeIcon from "@mui/icons-material/Home";
+import MenuIcon from "@mui/icons-material/Menu";
+import SettingsIcon from "@mui/icons-material/Settings";
+import {
+    BottomNavigation,
+    BottomNavigationAction,
+    Grid,
+    styled,
+} from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Link from "@mui/material/Link";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { User } from "../../app/models";
+import {
+    getLogOut,
+    loadCurrentToken,
+    selectIsAuthorized,
+    selectToken,
+    selectUser,
+} from "../user/userSlice";
 import styles from "./Layout.module.css";
 
 const pages = ["Home", "Sign In", "Sign Up", "New Article"];
@@ -247,15 +244,17 @@ const Layout = () => {
                 flexDirection="row"
                 alignItems="center"
                 onClick={() => navigate(`/${currentUser?.username}`)}
-                title = {currentUser?.username}
+                title={currentUser?.username}
               >
                 <Avatar
                   className={styles.avatar}
                   alt="Avatar"
-                  src={`${currentUser?.image}`}                  
+                  src={`${currentUser?.image}`}
                 />
-                <Typography color="red" textAlign="center" >
-                  {currentUser?.username.length>7 ? `${currentUser?.username.substring(0,5)}...` : currentUser?.username}
+                <Typography color="red" textAlign="center">
+                  {currentUser?.username.length > 6
+                    ? `${currentUser?.username.substring(0, 5)}...`
+                    : currentUser?.username}
                 </Typography>
               </Box>
             )}

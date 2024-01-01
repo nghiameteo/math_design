@@ -1,0 +1,17 @@
+.boxHeader {
+  background-color: #f3f3f3;
+  color: #373a3c;
+  padding: 5px 10px 10px 10px;
+  .chipFirst {
+  }
+  .chipSecond {
+    text-transform: none !important;
+    font-size: 0.8rem !important;
+    font-weight: 300 !important;
+    color: white !important;
+    cursor: pointer !important;
+    background-color: #818a91 !important;
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
+  }
+}

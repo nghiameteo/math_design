@@ -1,0 +1,6 @@
+.box {
+    width: 100% !important;
+    .gridContainer {
+        width: 100% !important;        
+    }
+}

@@ -1,24 +1,20 @@
+import { Box, Container, Grid, Typography, styled } from "@mui/material";
+import Tabs, { TabsProps } from "antd/es/tabs";
 import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import ArticleList from "../../page/article-list/ArticleList";
 import {
   fetchArticlesAsync,
   selectMultiArticle,
 } from "../article/multiArticleSlice";
-import Tabs, { TabsProps } from "antd/es/tabs";
-import { Col, Row } from "antd";
-import ArticleList from "../../page/article-list/ArticleList";
 import { clearTag, selectSingleTag } from "../filter/filterSlice";
 import TagFilter from "../tag/tag-filter";
 import { selectIsAuthorized } from "../user/userSlice";
-import { Box, Container, Grid, Typography, styled } from "@mui/material";
-import styles from './Feed.module.css'
+import styles from "./Feed.module.css";
 
 const Item = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  border: "1px solid",
-  borderColor: theme.palette.mode === "dark" ? "#444d58" : "#ced7e0",
   padding: theme.spacing(1),
-  borderRadius: "4px",
   textAlign: "center",
 }));
 const Feed = () => {
@@ -93,24 +89,6 @@ const Feed = () => {
           </Typography>
         </Container>
       </Box>
-      {/* <Row>
-            <Col span={18} push={6}>
-                <Tabs activeKey={activeTab} items={tabList} onChange={key => setActiveTab(key)} />
-                {isLoading && <>Loading...</>}
-                {!isLoading && total > 0 &&
-                    <ArticleList
-                        articles={articles}
-                        total={total}
-                        page={page}
-                        pageSize={pageSize}
-                        onPageChange={onFilterChange}
-                    />
-                }
-            </Col>
-            <Col span={6} pull={18}>
-                <TagFilter />
-            </Col>
-        </Row> */}
       <Grid
         container
         spacing={0}
@@ -122,7 +100,7 @@ const Feed = () => {
           gridAutoFlow: "column",
         }}
       >
-        <Grid xs={8} sx={{ display: { xs: "none", sm: "block" }}} item>
+        <Grid xs={8} sx={{ display: { xs: "none", sm: "block" } }} item>
           <Item>
             <Tabs
               activeKey={activeTab}
@@ -141,7 +119,7 @@ const Feed = () => {
             )}
           </Item>
         </Grid>
-        <Grid xs={12} sx={{ display: { xs: "block", sm: "none" }}} item>
+        <Grid xs={12} sx={{ display: { xs: "block", sm: "none" } }} item>
           <Item>
             <Tabs
               activeKey={activeTab}
@@ -160,7 +138,7 @@ const Feed = () => {
             )}
           </Item>
         </Grid>
-        
+
         <Grid
           xs={4}
           item
