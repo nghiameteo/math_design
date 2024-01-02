@@ -8,7 +8,14 @@ import {
 } from "../userProfileSlice";
 import { selectUser } from "../../userSlice";
 import { useEffect } from "react";
-import { Avatar, Box, Grid, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
 import styles from "./LayoutProfiles.module.css";
 
 const LayoutProfile = () => {
@@ -47,7 +54,7 @@ const LayoutProfile = () => {
               src={profile.image}
               sx={{ width: 112, height: 112 }}
             />
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h4" gutterBottom>
               {profile.username}
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
@@ -71,6 +78,8 @@ const LayoutProfile = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            flexGrow: 1,
+            flexShrink: 1,
           }}
         >
           <Avatar
@@ -78,18 +87,24 @@ const LayoutProfile = () => {
             src={profile.image}
             sx={{ width: 112, height: 112 }}
           />
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h4" gutterBottom>
             {profile.username}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             {profile.bio}
           </Typography>
-          <button
+          <Button
             onClick={() => onFollowUser(profile.username, profile.following)}
+            sx={{
+              width: "80%",
+              textTransform: "none",
+              color: "grey",
+              justifyContent: "flex-end",
+            }}
           >
-            {profile?.following == true ? "Unfollow" : "Follow"}{" "}
+            {profile?.following == true ? "- Unfollow " : "+ Follow "}
             {profile.username}
-          </button>
+          </Button>
         </Box>
       );
     } else {
@@ -122,14 +137,17 @@ const LayoutProfile = () => {
     }
   }, [username]);
 
-  return (    
-      <Box className={styles.box}>
-        <Box sx={{ mx: "auto" }}>
+  return (
+    <Box className={styles.box}>
+      <Box sx={{width: '100%', backgroundColor: "#f3f3f3", padding: "1rem"}}>
+        <Container
+          maxWidth="xl"          
+        >
           {!isLoading && !!profile && renderProFile()}
-        </Box>
-
-        <Outlet />
-      </Box>    
+        </Container>
+      </Box>
+      <Outlet />
+    </Box>
   );
 };
 export default LayoutProfile;

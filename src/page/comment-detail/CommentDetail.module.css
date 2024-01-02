@@ -1,0 +1,41 @@
+.container {
+    box-shadow: none !important;
+    width: 100%;
+  }
+  
+  .container:last-of-type .divider {
+    display: none;
+  }
+  
+  .title {
+    color: #373a3c;
+    font-weight: bold !important;
+  }
+  
+  .description {
+    color: #bbb;
+  }
+  
+  .author {
+    color: #5cb85c;
+    text-decoration: none;
+  }
+  
+  .date {
+    color: #bbb;
+    font-size: small;
+  }
+  
+  .link {
+    text-decoration: none;
+  }
+  
+  .readMore {
+    color: #bbb;
+    font-size: small;
+  }
+  
+  .actions {
+    justify-content: space-between;
+  }
+  
