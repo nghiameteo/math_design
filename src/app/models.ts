@@ -138,6 +138,7 @@ export interface UserState {
 export interface SingleArticleState {
     isLoading: boolean;
     article?: Article;
+    isFollowProcessing: boolean;
 }
 
 export interface DelArticleParams {

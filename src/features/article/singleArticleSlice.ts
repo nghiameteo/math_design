@@ -1,14 +1,15 @@
 import { PayloadAction, createAction, createSlice } from "@reduxjs/toolkit";
 import { call, put, takeLatest } from "redux-saga/effects";
 
-import { Article, DelArticleParams, FavoritesArticleParams, NewArticle, Profile, ProfileResponse, SingleArticleResponse, SingleArticleState, UpdateArticleParams, FollowUserParams } from "../../app/models";
-import { RootState } from "../../app/store";
-import router from "../../app/router";
 import { api } from "../../app/axios-instance";
+import { Article, DelArticleParams, FavoritesArticleParams, FollowUserParams, NewArticle, Profile, ProfileResponse, SingleArticleResponse, SingleArticleState, UpdateArticleParams } from "../../app/models";
+import router from "../../app/router";
+import { RootState } from "../../app/store";
 
 const initialState: SingleArticleState = {
     isLoading: false,
     article: undefined,
+    isFollowProcessing: false,
 }
 
 //load single article follow slug
@@ -104,9 +105,9 @@ function* delArticleSaga(action: PayloadAction<DelArticleParams>) {
 // toggle favorite
 export const toggleFavoritesArticleAsync = createAction<FavoritesArticleParams>('article/toggleFavoritesArticleAsync');
 const toggleFavorites = async (params: FavoritesArticleParams): Promise<SingleArticleResponse> => {
-    const url = `/articles/${params?.slug}/favorite`;
+    const url = `/articles/${params?.article.slug}/favorite`;
     if (!params?.isFavorites) {
-        return (await api.post<SingleArticleResponse>(url, { slug: params?.slug })).data;
+        return (await api.post<SingleArticleResponse>(url, { slug: params?.article.slug })).data;
     }
     else {
         return (await api.delete<SingleArticleResponse>(url)).data;
@@ -134,13 +135,13 @@ const toggleFollowArticleUser = async (params: FollowUserParams): Promise<Profil
 }
 function* toggleFollowArticleUserSaga(action: PayloadAction<FollowUserParams>) {
     try {
-        yield put(setIsLoading(true));
+        yield put(setIsFollowProcessing(true));
         const response: ProfileResponse = yield call(toggleFollowArticleUser, action.payload)
         yield put(toggleArticleFollow(response.profile));
-        yield put(setIsLoading(false));
+        yield put(setIsFollowProcessing(false));
     }
     catch (error) {
-        yield put(setIsLoading(false));
+        yield put(setIsFollowProcessing(false));
         console.log('toggleFollowArticleUserSaga', error);
     }
 }
@@ -169,6 +170,9 @@ export const articleSlice = createSlice({
             const article = action.payload;
             return { ...state, article: article };
         },
+        setIsFollowProcessing: (state, action: PayloadAction<boolean>) => {
+            return { ...state, isFollowProcessing: action.payload }
+        },
         toggleArticleFollow: (state, action: PayloadAction<Profile>) => {
             const articleAfterChange: Article = {
                 ...state.article!,
@@ -182,7 +186,7 @@ export const articleSlice = createSlice({
     }
 });
 
-export const { setIsLoading, load, toggle, toggleArticleFollow } = articleSlice.actions;
+export const { setIsLoading, load, toggle, setIsFollowProcessing, toggleArticleFollow } = articleSlice.actions;
 export const selectArticle = (state: RootState) => state.article.article;
 export const selectIsLoadingArticle = (state: RootState) => state.article.isLoading;
 

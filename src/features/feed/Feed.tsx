@@ -110,6 +110,7 @@ const Feed = () => {
           >
             {tabItems.map((item) => (
               <Tab
+                key={item.value}
                 {...item}
                 className={item.value === activeTab ? styles.activeTab : ""}
               />
@@ -126,7 +127,7 @@ const Feed = () => {
             />
           )}
         </Grid>
-        <Grid xs={4} sx={{ display: { xs: "none", sm: "block" } }}>
+        <Grid item xs={4} sx={{ display: { xs: "none", sm: "block" } }}>
           <TagFilter />
         </Grid>
       </Grid>

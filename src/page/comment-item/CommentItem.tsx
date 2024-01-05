@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   Container,
+  Divider,
   TextField,
   capitalize,
 } from "@mui/material";
@@ -121,13 +122,15 @@ const CommentItem = ({
       )}
       <Container maxWidth="xl" sx={{ width: "75%" }}>
         {comments.length > 0 &&
-          comments.map((comment) => (
-            <CommentDetail
-              key={comment.id}
-              comment={comment}
-              onDelete={onDelete}
-              currentUser={currentUser}
-            />
+          comments.map((comment, index) => (
+            <Box key={comment.id}>
+              <CommentDetail
+                comment={comment}
+                onDelete={onDelete}
+                currentUser={currentUser}
+              />
+              {index + 1 < comments.length && <Divider />}
+            </Box>
           ))}
       </Container>
     </>

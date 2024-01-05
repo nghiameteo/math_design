@@ -1,22 +1,44 @@
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import RemoveIcon from "@mui/icons-material/Remove";
 import {
   Avatar,
   Box,
   Button,
+  ButtonProps,
   Container,
-  Divider,
   Grid,
   Typography,
+  styled,
 } from "@mui/material";
+import { green, grey } from "@mui/material/colors";
 import { Link, useNavigate } from "react-router-dom";
 import { Article, ConvertDate, User } from "../../app/models";
 import TagList from "../tag-list/TagList";
 import styles from "./ArticleDetails.module.css";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+
+const GreyButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  color: grey[500],
+  borderColor: grey[500],
+  "&:hover": {
+    color: grey[300],
+    borderColor: grey[300],
+    backgroundColor: grey[500],
+  },
+}));
+
+const GreenButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  color: green[500],
+  borderColor: green[500],
+  "&:hover": {
+    color: "white",
+    borderColor: green[500],
+    backgroundColor: green[500],
+  },
+}));
 
 interface OwnProps {
   article: Article;
@@ -36,153 +58,71 @@ const ArticleDetails = ({
   onFollowUser,
 }: OwnProps) => {
   const navigate = useNavigate();
+
   const renderLink = () => {
-    if (!isAuthorized) {
-      return (
-        <Container>
-          <Button
-            size="small"
-            variant="outlined"
-            onClick={() => navigate("/register")}
-            sx={{
-              textTransform: "none",
-              color: "lightgrey",
-              borderColor: "grey",
-            }}
-          >
-            {article.author.following == true ? "- Unfollow" : "+ Follow"}{" "}
-            {article.author.username}
-          </Button>
-          <Button
-            color="success"
-            size="small"
-            variant="outlined"
-            onClick={() => navigate("/login")}
-            sx={{ textTransform: "none" }}
-          >
-            {article.favorited ? (
-              <>
-                <FavoriteIcon fontSize="small" /> Unfavorite
-              </>
-            ) : (
-              <>
-                <FavoriteBorderIcon fontSize="small" /> Favorite
-              </>
-            )}
-            ({article.favoritesCount})
-          </Button>
-        </Container>
-      );
-    } else if (currenUser?.username == article.author.username) {
-      return (
-        <Container
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: ".2rem",
+    return (
+      <Container className={styles.buttonContainer}>
+        <GreyButton
+          onClick={() => {
+            isAuthorized
+              ? onFollowUser(article.author.username, article.author.following)
+              : navigate("/login");
           }}
+          color="success"
+          size="small"
+          variant="outlined"
+          startIcon={article.author.following ? <RemoveIcon /> : <AddIcon />}
+          className={styles.button}
         >
-          <Button
-            size="small"
-            variant="outlined"
-            onClick={() => navigate(`/editor/${article.slug}`)}
-            sx={{
-              textTransform: "none",
-              color: "#c9dae5",
-              borderColor: "#28497F",
-              "&:hover": {
-                color: 'white',
-                backgroundColor: "#28497F",
-              }
-            }}
-          >
-             <EditIcon fontSize="small"/> Edit Article
-          </Button>
-          <Button
-            size="small"
-            variant="outlined"
-            onClick={() => onDeleteArticle(article.slug)}
-            sx={{ 
-              textTransform: "none",
-              color: "#CD4523",
-              borderColor: "#CD4523",
-              "&:hover": {
-                color: 'white',
-                backgroundColor: "#CD4523",
-                borderColor: "#CD4523",
-              }
-             }}
-          >
-            <DeleteIcon fontSize='small'/> Delete article
-          </Button>
-        </Container>
-      );
-    } else {
-      return (
-        <Container>
-          <Button
-            size="small"
-            variant="outlined"
-            onClick={() =>
-              onFollowUser(article.author.username, article.author.following)
-            }
-            sx={{
-              opacity: "0.8",
-              textTransform: "none",
-              color: "lightgrey",
-              borderColor: "#ccc",
-              marginRight: "0.1rem",
-              "&:hover": {
-                borderColor: "#ccc",
-                backgroundColor: "#ccc",
-                color: "white",
-                opacity: "1",
-              },
-            }}
-          >
-            {article.author.following == true ? (
-              <>
-                <RemoveIcon fontSize="small" /> Unfollow
-              </>
-            ) : (
-              <>
-                <AddIcon fontSize="small" /> Follow
-              </>
-            )}
-            {article.author.username}
-          </Button>
-          <Button
-            color="success"
-            size="small"
-            variant="outlined"
-            onClick={() => onFavoriteArticle(article.slug, article.favorited)}
-            sx={{
-              color: "#5CB85C",
-              textTransform: "none",
-              borderColor: "#5CB85C",
-              "&:hover": {
-                borderColor: "#5CB85C",
-                backgroundColor: "#5CB85C",
-                color: "white",
-              },
-            }}
-          >
-            {article.favorited ? (
-              <>
-                <FavoriteIcon fontSize="small" /> Unfavorite
-              </>
-            ) : (
-              <>
-                <FavoriteBorderIcon fontSize="small" /> Favorite
-              </>
-            )}
-            ({article.favoritesCount})
-          </Button>
-        </Container>
-      );
-    }
+          {article.author.following == true ? "Unfollow " : "Follow "}
+          {article.author.username}
+        </GreyButton>
+        <GreenButton
+          onClick={() => {
+            isAuthorized
+              ? onFavoriteArticle(article.slug, article.favorited)
+              : navigate("/login");
+          }}
+          color="success"
+          size="small"
+          variant="outlined"
+          startIcon={
+            article.favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />
+          }
+          className={styles.button}
+        >
+          {article.author.following == true ? "Unfavorite " : "Favorite "}(
+          {article.favoritesCount})
+        </GreenButton>
+      </Container>
+    );
+  };
+
+  const renderOwnerLink = () => {
+    return (
+      <Container className={styles.buttonContainer}>
+        <GreenButton
+          onClick={() => navigate(`/editor/${article.slug}`)}
+          size="small"
+          variant="outlined"
+          color="success"
+          startIcon={<EditIcon />}
+          className={styles.button}
+        >
+          Edit Article
+        </GreenButton>
+        <Button
+          onClick={() => onDeleteArticle(article.slug)}
+          size="small"
+          variant="outlined"
+          color="error"
+          startIcon={<DeleteIcon />}
+          className={styles.button}
+        >
+          Delete article
+        </Button>
+      </Container>
+    );
   };
 
   return (
@@ -240,7 +180,11 @@ const ArticleDetails = ({
                 {ConvertDate(article.createdAt)}
               </Typography>
             </Grid>
-            <Grid item>{renderLink()}</Grid>
+            <Grid item>
+              {currenUser?.username == article.author.username
+                ? renderOwnerLink()
+                : renderLink()}
+            </Grid>
           </Grid>
         </Container>
       </Box>

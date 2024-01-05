@@ -4,9 +4,9 @@
   flex-direction: column;
   justify-content: center !important;
   align-items: center !important;
-  
+
   .boxContainerHeader {
-    box-sizing:inherit;
+    box-sizing: inherit;
     width: 100%;
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -14,7 +14,7 @@
     background-color: #333 !important;
     color: #fff;
 
-    .containerHeaderChild {      
+    .containerHeaderChild {
       padding: 24px;
       margin: 0;
       display: flex !important;
@@ -31,21 +31,32 @@
     gap: 30px;
     padding: 24px;
     margin: 0;
-        .boxFooter {
-            width: 100%;
-            border-bottom: 1px solid grey;
-        }
+    .boxFooter {
+      width: 100%;
+      border-bottom: 1px solid grey;
+    }
   }
 }
 .linkUsername {
-    text-decoration: none;
-    color: white !important;
-    font-weight: 500;
-    
+  text-decoration: none;
+  color: white !important;
+  font-weight: 500;
 }
 .linkUsername:hover {
-    text-decoration:underline;
-    color: white !important;
-    font-weight: 700;
-    
+  text-decoration: underline;
+  color: white !important;
+  font-weight: 700;
+}
+
+.button {
+  text-transform: none !important;
+  margin-right: 3px !important;
+}
+
+.buttonContainer {
+  display: "flex";
+  flex-direction: "row";
+  justify-content: "center";
+  align-items: "center";
+  gap: ".2rem";
 }
