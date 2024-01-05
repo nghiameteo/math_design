@@ -1,9 +1,20 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Box, Button, Card, Container, TextField } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Container,
+  TextField,
+  capitalize,
+} from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Comment, NewComment, User } from "../../app/models";
 import CommentDetail from "../comment-detail/CommentDetail";
+import styles from "./CommentItem.module.css";
+import { Height } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 interface OwnProps {
   isLoading: boolean;
@@ -24,6 +35,7 @@ const CommentItem = ({
   onSubmit,
   onDelete,
 }: OwnProps) => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       body: "",
@@ -63,39 +75,59 @@ const CommentItem = ({
 
         //     </Form>
         // </Formik>
-        <Box>
-          <form onSubmit={formik.handleSubmit}>
+        <Container className={styles.formContainer} maxWidth="xl">
+          <Avatar
+            alt={capitalize(currentUser.username)}
+            src={`${currentUser.image}`}
+            onClick={() => navigate(`/${currentUser.username}`)}
+            sx={{
+              width: "5rem",
+              height: "5rem",
+              "&:hover": { cursor: "pointer" },
+            }}
+          />
+
+          <form className={styles.form} onSubmit={formik.handleSubmit}>
             <TextField
               fullWidth
               id="body"
               name="body"
               label="comment"
+              multiline
+              minRows={2}
+              maxRows={6}
+              placeholder="write comment"
               value={formik.values.body}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.body && Boolean(formik.errors.body)}
               helperText={formik.touched.body && formik.errors.body}
             />
+
             <br />
             <br />
             <Button
-              color="primary"
+              color="success"
               variant="contained"
               fullWidth
               type="submit"
               disabled={isLoading}
+              sx={{ backgroundColor: "#5CB85C" }}
             >
               {isLoading ? "Loading..." : "Post Comment"}
             </Button>
           </form>
-        </Box>
+        </Container>
       )}
-      <Container maxWidth='xl' sx={{width: '75%'}}>
+      <Container maxWidth="xl" sx={{ width: "75%" }}>
         {comments.length > 0 &&
           comments.map((comment) => (
-            <Card key={comment.id}>
-              <CommentDetail comment={comment} onDelete={onDelete} currentUser={currentUser}/>              
-            </Card>
+            <CommentDetail
+              key={comment.id}
+              comment={comment}
+              onDelete={onDelete}
+              currentUser={currentUser}
+            />
           ))}
       </Container>
     </>

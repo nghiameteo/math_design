@@ -24,10 +24,7 @@ const TagFilter = () => {
     <>
       <Box
         className={styles.boxHeader}
-        display={"flex"}
-        flexDirection={"column"}
-        sx={{ gap: "1rem" }}
-        justifyContent={"flex-start"}
+        maxHeight='xl'
       >
         <Typography
           className={styles.chipFirst}>

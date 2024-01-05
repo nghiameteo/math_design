@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import ArticleDetails from "../../../page/article-details/ArticleDetails"
-import { delArticleAsync, fetchArticleAsync, selectArticle, toggleFavoritesArticleAsync, toggleFollowArticleUserAsync } from "../singleArticleSlice";
+import { delArticleAsync, fetchArticleAsync, selectArticle, selectIsLoadingArticle, toggleFavoritesArticleAsync, toggleFollowArticleUserAsync } from "../singleArticleSlice";
 import { useParams } from "react-router-dom";
 import Commentator from "../../commentator";
 import { selectIsAuthorized, selectUser } from "../../user/userSlice";
@@ -13,6 +13,7 @@ const ArticleDetailsFeatures = () => {
     const dispatch = useAppDispatch();
     const currenUser = useAppSelector(selectUser);
     const isAuthorized = useAppSelector(selectIsAuthorized);
+    const isLoading =useAppSelector(selectIsLoadingArticle)
 
     const onDeleteArticle = (slug: string) => {
         dispatch(delArticleAsync({ slug }));
@@ -33,7 +34,8 @@ const ArticleDetailsFeatures = () => {
     return <>
         {!!article && <ArticleDetails article={article} currenUser={currenUser} isAuthorized={isAuthorized}onDeleteArticle={onDeleteArticle} onFavoriteArticle={onFavoriteArticle} onFollowUser={onFollowUser}/>}
         {!!article && !!slug && <Commentator slug={slug} />}
-        {!article && <>No Article here!</>}
+        {!article && !isLoading && <>No Article here!</>}
+        {isLoading && <>Loading...</>}
     </>
 }
 export default ArticleDetailsFeatures

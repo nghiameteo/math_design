@@ -1,11 +1,4 @@
-import {
-  Box,
-  Container,
-  Grid,
-  Tab,
-  Tabs,
-  Typography
-} from "@mui/material";
+import { Box, Container, Grid, Tab, Tabs, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import ArticleList from "../../page/article-list/ArticleList";
@@ -133,11 +126,7 @@ const Feed = () => {
             />
           )}
         </Grid>
-        <Grid
-          xs={4}
-          item
-          sx={{ display: { xs: "none", sm: "flex" }, justifyContent: "center" }}
-        >
+        <Grid xs={4} sx={{ display: { xs: "none", sm: "block" } }}>
           <TagFilter />
         </Grid>
       </Grid>

@@ -142,6 +142,7 @@ const UserProfile = ({ tab }: OwnProps) => {
 
   return (
     <Container
+      className={styles.container}
       maxWidth="xl"
       sx={{
         display: "flex",
@@ -152,10 +153,18 @@ const UserProfile = ({ tab }: OwnProps) => {
         flexShrink: 1,
       }}
     >
-      <Box sx={{ width: "90%", justifyContent: "center" }}>
-        <Tabs value={tab} onChange={handleChange}>
-          <Tab value="articles" label="Articles" />
-          <Tab value="favorites" label="Favorites" />
+      <Box className={styles.boxTabs}>
+        <Tabs className={styles.tabs} value={tab} 
+        TabIndicatorProps={{style: {backgroundColor:'#5CB85C'}}}        
+        onChange={handleChange} 
+        sx={{
+          fontWeight: 400, color: '#aaa',
+          "& button.Mui-selected": {fontWeight: 700, color: "#5CB85C", backgroundColor: 'white'},
+          "& button:hover": {fontWeight: 700},       
+        }}
+        >
+          <Tab value="articles" label="Articles" sx={{textTransform: 'none'}}/>
+          <Tab value="favorites" label="Favorites" sx={{textTransform: 'none'}} />
         </Tabs>
       </Box>
       {isLoading ? (

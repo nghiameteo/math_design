@@ -1,7 +1,12 @@
 .boxHeader {
-  background-color: #f3f3f3;
-  color: #373a3c;
-  padding: 5px 10px 10px 10px;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  gap: 1rem !important;
+  background-color: #f3f3f3 !important;
+  color: #373a3c !important;
+  padding: 10px !important;
+
   .chipFirst {
   }
   .chipSecond {

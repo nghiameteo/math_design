@@ -1,3 +1,4 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Avatar,
   Button,
@@ -6,11 +7,9 @@ import {
   CardHeader,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Comment, ConvertDate, User } from "../../app/models";
 import styles from "./CommentDetail.module.css";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 interface OwnProps {
   comment: Comment;
@@ -19,10 +18,6 @@ interface OwnProps {
 }
 
 const CommentDetail = ({ comment, currentUser, onDelete }: OwnProps) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const onChange = (checked: boolean) => {
-    setLoading(!checked);
-  };
 
   return (
     <>
@@ -42,8 +37,8 @@ const CommentDetail = ({ comment, currentUser, onDelete }: OwnProps) => {
         </Skeleton>
       </Card> */}
 
-      <Card className={styles.container}>
-        <CardHeader //
+      <Card className={styles.cardContainer} sx={{boxShadow: 'none'}}>
+        <CardHeader 
           avatar={<Avatar alt="Avatar" src={`${comment.author.image}`} />}
           action={
             currentUser?.username == comment.author.username && (
@@ -53,8 +48,8 @@ const CommentDetail = ({ comment, currentUser, onDelete }: OwnProps) => {
                 startIcon={<DeleteIcon />}
                 color="success"
                 size="small"
-                sx={{ color:'black'}}
-              >Delete</Button>
+                sx={{ color:'#333', borderColor: '#bbb', backgroundColor: '#bbb', "&:hover": { color: 'white', backgroundColor: '#CD4523', borderColor: '#CD4523' }}}
+              ></Button>
             )
           }
           title={
@@ -75,8 +70,7 @@ const CommentDetail = ({ comment, currentUser, onDelete }: OwnProps) => {
           }
         />
         <CardContent>
-          <Typography
-            gutterBottom
+          <Typography            
             variant="body2"
             className={styles.description}
           >

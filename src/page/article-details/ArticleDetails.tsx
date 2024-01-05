@@ -10,10 +10,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-
 import { Article, ConvertDate, User } from "../../app/models";
 import TagList from "../tag-list/TagList";
 import styles from "./ArticleDetails.module.css";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface OwnProps {
   article: Article;
@@ -59,11 +62,11 @@ const ArticleDetails = ({
           >
             {article.favorited ? (
               <>
-                <FavoriteIcon /> UnFavorite
+                <FavoriteIcon fontSize="small" /> Unfavorite
               </>
             ) : (
               <>
-                <FavoriteBorderIcon /> Favorite
+                <FavoriteBorderIcon fontSize="small" /> Favorite
               </>
             )}
             ({article.favoritesCount})
@@ -72,27 +75,47 @@ const ArticleDetails = ({
       );
     } else if (currenUser?.username == article.author.username) {
       return (
-        <Container>
+        <Container
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: ".2rem",
+          }}
+        >
           <Button
             size="small"
             variant="outlined"
             onClick={() => navigate(`/editor/${article.slug}`)}
             sx={{
               textTransform: "none",
-              color: "lightgrey",
-              borderColor: "grey",
+              color: "#c9dae5",
+              borderColor: "#28497F",
+              "&:hover": {
+                color: 'white',
+                backgroundColor: "#28497F",
+              }
             }}
           >
-            Edit Article
+             <EditIcon fontSize="small"/> Edit Article
           </Button>
           <Button
-            color="success"
             size="small"
             variant="outlined"
             onClick={() => onDeleteArticle(article.slug)}
-            sx={{ textTransform: "none" }}
+            sx={{ 
+              textTransform: "none",
+              color: "#CD4523",
+              borderColor: "#CD4523",
+              "&:hover": {
+                color: 'white',
+                backgroundColor: "#CD4523",
+                borderColor: "#CD4523",
+              }
+             }}
           >
-            Delete article
+            <DeleteIcon fontSize='small'/> Delete article
           </Button>
         </Container>
       );
@@ -106,12 +129,28 @@ const ArticleDetails = ({
               onFollowUser(article.author.username, article.author.following)
             }
             sx={{
+              opacity: "0.8",
               textTransform: "none",
               color: "lightgrey",
-              borderColor: "grey",
+              borderColor: "#ccc",
+              marginRight: "0.1rem",
+              "&:hover": {
+                borderColor: "#ccc",
+                backgroundColor: "#ccc",
+                color: "white",
+                opacity: "1",
+              },
             }}
           >
-            {article.author.following == true ? "- Unfollow" : "+ Follow"}{" "}
+            {article.author.following == true ? (
+              <>
+                <RemoveIcon fontSize="small" /> Unfollow
+              </>
+            ) : (
+              <>
+                <AddIcon fontSize="small" /> Follow
+              </>
+            )}
             {article.author.username}
           </Button>
           <Button
@@ -119,15 +158,24 @@ const ArticleDetails = ({
             size="small"
             variant="outlined"
             onClick={() => onFavoriteArticle(article.slug, article.favorited)}
-            sx={{ textTransform: "none" }}
+            sx={{
+              color: "#5CB85C",
+              textTransform: "none",
+              borderColor: "#5CB85C",
+              "&:hover": {
+                borderColor: "#5CB85C",
+                backgroundColor: "#5CB85C",
+                color: "white",
+              },
+            }}
           >
             {article.favorited ? (
               <>
-                <FavoriteIcon /> UnFavorite
+                <FavoriteIcon fontSize="small" /> Unfavorite
               </>
             ) : (
               <>
-                <FavoriteBorderIcon /> Favorite
+                <FavoriteBorderIcon fontSize="small" /> Favorite
               </>
             )}
             ({article.favoritesCount})
@@ -141,12 +189,25 @@ const ArticleDetails = ({
     <Box className={styles.boxHeader}>
       <Box className={styles.boxContainerHeader}>
         <Container className={styles.containerHeader} maxWidth="xl">
-          <Typography variant="h4">{article.title}</Typography>
+          <Typography
+            variant="h3"
+            sx={{
+              color: "#fff",
+            }}
+          >
+            {article.title}
+          </Typography>
           <Grid
             container
             wrap="nowrap"
-            spacing={1}
-            sx={{ color: "white", my: 0, justifyContent: "flex start" }}
+            spacing={1.5}
+            sx={{
+              color: "white",
+              mt: 2,
+              justifyContent: "flex start",
+              width: "100%",
+              gap: "1rem",
+            }}
           >
             <Grid item>
               <Link to={`/${article.author.username}`}>
@@ -170,7 +231,12 @@ const ArticleDetails = ({
               >
                 {article.author.username}
               </Link>
-              <Typography variant="caption" display="block" gutterBottom>
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                sx={{ opacity: "0.8", color: "#bbb" }}
+              >
                 {ConvertDate(article.createdAt)}
               </Typography>
             </Grid>
@@ -184,7 +250,9 @@ const ArticleDetails = ({
           <Typography variant="h6" gutterBottom>
             {article.body}
           </Typography>
-          <TagList tags={article.tagList} />
+          <Box sx={{ py: "1rem" }}>
+            <TagList tags={article.tagList} />
+          </Box>
         </Box>
       </Container>
     </Box>

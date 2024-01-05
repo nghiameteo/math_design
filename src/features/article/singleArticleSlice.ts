@@ -1,7 +1,7 @@
 import { PayloadAction, createAction, createSlice } from "@reduxjs/toolkit";
 import { call, put, takeLatest } from "redux-saga/effects";
 
-import { Article, DelArticleParams, FavoritesArticleParams, NewArticle, Profile, ProfileResponse, SingleArticleResponse, SingleArticleState, UpdateArticleParams,FollowUserParams } from "../../app/models";
+import { Article, DelArticleParams, FavoritesArticleParams, NewArticle, Profile, ProfileResponse, SingleArticleResponse, SingleArticleState, UpdateArticleParams, FollowUserParams } from "../../app/models";
 import { RootState } from "../../app/store";
 import router from "../../app/router";
 import { api } from "../../app/axios-instance";
@@ -159,7 +159,7 @@ export const articleSlice = createSlice({
     initialState,
     reducers: {
         setIsLoading: (state, action: PayloadAction<boolean>) => {
-            return { ...state, isLoading: action.payload }
+            return { ...state, isLoading: action.payload, article: action.payload ? undefined : state.article }
         },
         load: (state, action: PayloadAction<Article>) => {
             const article = action.payload;
@@ -172,7 +172,7 @@ export const articleSlice = createSlice({
         toggleArticleFollow: (state, action: PayloadAction<Profile>) => {
             const articleAfterChange: Article = {
                 ...state.article!,
-                author: action.payload,                
+                author: action.payload,
             };
             return {
                 ...state,

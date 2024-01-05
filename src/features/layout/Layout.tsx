@@ -6,10 +6,10 @@ import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
-    BottomNavigation,
-    BottomNavigationAction,
-    Grid,
-    styled,
+  BottomNavigation,
+  BottomNavigationAction,
+  Grid,
+  styled,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
@@ -24,16 +24,16 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { User } from "../../app/models";
 import {
-    getLogOut,
-    loadCurrentToken,
-    selectIsAuthorized,
-    selectToken,
-    selectUser,
+  getLogOut,
+  loadCurrentToken,
+  selectIsAuthorized,
+  selectToken,
+  selectUser,
 } from "../user/userSlice";
 import styles from "./Layout.module.css";
 
@@ -225,16 +225,18 @@ const Layout = () => {
                     ? page.link(currentUser)
                     : "";
                 return (
-                  <Button className={styles.button} key={title}>
-                    <Link
-                      underline="none"
-                      textTransform="none"
-                      color="black"
-                      onClick={() => navigate(link)}
-                    >
-                      {title}
-                    </Link>
-                  </Button>
+                  <Link
+                    key={title}
+                    className={
+                      page.title === "Home" ? styles.linkActive : styles.link
+                    }
+                    underline="none"
+                    textTransform="none"
+                    color="rgba(0, 0, 0, 0.3)"
+                    onClick={() => navigate(link)}
+                  >
+                    {title}
+                  </Link>
                 );
               })}
             </Box>
