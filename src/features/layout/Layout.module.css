@@ -39,6 +39,18 @@
           cursor: pointer;
         }
       }
+      .linkFixWidth{
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        text-transform: none !important;
+        text-decoration: none !important;
+        .typoUsername {
+          text-align: center;
+          color: #5cb85c;
+          cursor: pointer !important;
+        }
+      }
     }
   }
 }

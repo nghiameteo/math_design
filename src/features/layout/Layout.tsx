@@ -241,10 +241,8 @@ const Layout = () => {
               })}
             </Box>
             {!!currentUser && (
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
+              <Link
+                className={styles.linkFixWidth}
                 onClick={() => navigate(`/${currentUser?.username}`)}
                 title={currentUser?.username}
               >
@@ -253,12 +251,12 @@ const Layout = () => {
                   alt="Avatar"
                   src={`${currentUser?.image}`}
                 />
-                <Typography color="red" textAlign="center">
+                <Typography className={styles.typoUsername}>
                   {currentUser?.username.length > 6
                     ? `${currentUser?.username.substring(0, 5)}...`
                     : currentUser?.username}
                 </Typography>
-              </Box>
+              </Link>
             )}
             {/* {isAuthorized && (
               <Box sx={{ flexGrow: 0 }}>

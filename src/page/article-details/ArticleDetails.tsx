@@ -10,11 +10,19 @@ import {
   Button,
   ButtonProps,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   Typography,
   styled,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import { green, grey } from "@mui/material/colors";
+import { green, grey, red } from "@mui/material/colors";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Article, ConvertDate, User } from "../../app/models";
 import TagList from "../tag-list/TagList";
@@ -40,6 +48,16 @@ const GreenButton = styled(Button)<ButtonProps>(({ theme }) => ({
   },
 }));
 
+const DeleteButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  color: red[900],
+  borderColor: red[900],
+  "&:hover": {
+    color: "white",
+    borderColor: red[900],
+    backgroundColor: red[900],
+  },
+}));
+
 interface OwnProps {
   article: Article;
   currenUser?: User;
@@ -58,6 +76,20 @@ const ArticleDetails = ({
   onFollowUser,
 }: OwnProps) => {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleCloseReject = () => {
+    setOpen(false);
+  };
+  const handleCloseAccept = () => {
+    setOpen(false);
+    onDeleteArticle(article.slug);
+  };
 
   const renderLink = () => {
     return (
@@ -97,7 +129,6 @@ const ArticleDetails = ({
       </Container>
     );
   };
-
   const renderOwnerLink = () => {
     return (
       <Container className={styles.buttonContainer}>
@@ -111,8 +142,8 @@ const ArticleDetails = ({
         >
           Edit Article
         </GreenButton>
-        <Button
-          onClick={() => onDeleteArticle(article.slug)}
+        <DeleteButton
+          onClick={handleClickOpen}
           size="small"
           variant="outlined"
           color="error"
@@ -120,7 +151,30 @@ const ArticleDetails = ({
           className={styles.button}
         >
           Delete article
-        </Button>
+        </DeleteButton>
+        <Dialog
+          fullScreen={fullScreen}
+          open={open}
+          onClose={handleCloseReject}
+          aria-labelledby="responsive-dialog-title"
+        >
+          <DialogTitle id="responsive-dialog-title">
+            {"Are you sure to delete the article?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              The article will be deleted and cannot be recovered!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleCloseReject}>
+              Disagree
+            </Button>
+            <Button onClick={handleCloseAccept} autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     );
   };
@@ -129,54 +183,28 @@ const ArticleDetails = ({
     <Box className={styles.boxHeader}>
       <Box className={styles.boxContainerHeader}>
         <Container className={styles.containerHeader} maxWidth="xl">
-          <Typography
-            variant="h3"
-            sx={{
-              color: "#fff",
-            }}
-          >
+          <Typography className={styles.typoH3} variant="h3">
             {article.title}
           </Typography>
           <Grid
+            className={styles.gridContainer}
             container
             wrap="nowrap"
-            spacing={1.5}
-            sx={{
-              color: "white",
-              mt: 2,
-              justifyContent: "flex start",
-              width: "100%",
-              gap: "1rem",
-            }}
+            spacing={2}
           >
             <Grid item>
               <Link to={`/${article.author.username}`}>
                 <Avatar alt="Avatar" src={`${article.author.image}`} />
               </Link>
             </Grid>
-            <Grid
-              item
-              xs="auto"
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-start",
-                flexDirection: "column",
-                textAlign: "left",
-              }}
-            >
+            <Grid className={styles.gridItemContainer} item xs={1.5}>
               <Link
                 className={styles.linkUsername}
                 to={`/${article.author.username}`}
               >
                 {article.author.username}
               </Link>
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                sx={{ opacity: "0.8", color: "#bbb" }}
-              >
+              <Typography className={styles.typoDate} variant="caption">
                 {ConvertDate(article.createdAt)}
               </Typography>
             </Grid>
@@ -191,10 +219,8 @@ const ArticleDetails = ({
 
       <Container className={styles.containerFooter} maxWidth="xl">
         <Box className={styles.boxFooter}>
-          <Typography variant="h6" gutterBottom>
-            {article.body}
-          </Typography>
-          <Box sx={{ py: "1rem" }}>
+          <Typography variant="h6">{article.body}</Typography>
+          <Box className={styles.boxTagList}>
             <TagList tags={article.tagList} />
           </Box>
         </Box>

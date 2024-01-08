@@ -163,8 +163,8 @@ const UserProfile = ({ tab }: OwnProps) => {
           "& button:hover": {fontWeight: 700},       
         }}
         >
-          <Tab value="articles" label="Articles" sx={{textTransform: 'none'}}/>
-          <Tab value="favorites" label="Favorites" sx={{textTransform: 'none'}} />
+          <Tab value="articles" label="My Articles" sx={{textTransform: 'none'}}/>
+          <Tab value="favorites" label="Favorites Articles" sx={{textTransform: 'none'}} />
         </Tabs>
       </Box>
       {isLoading ? (

@@ -6,15 +6,23 @@
   margin: 0;
   border-radius: 1rem;
   width: 100%;
+
+  .boxCoverContainer {
+    width: 100% !important;
+    background-color: #f3f3f3 !important;
+    padding: 1rem !important;
+
+    .boxInformation {
+      width: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: .1rem !important;
+    }
+  }
 }
-.boxInfomation {
-  width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: .1rem !important;
-}
+
 .boxFlexEnd {
   width: 100% !important;
   display: flex !important;
@@ -44,5 +52,10 @@
   }
   .button:hover{
     background-color: #CCCCCC !important;
+  }
+
+  .linkFixWidth{
+    text-transform: none !important;
+    text-decoration: none !important;
   }
 }

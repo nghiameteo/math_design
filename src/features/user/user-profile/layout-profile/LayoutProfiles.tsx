@@ -1,6 +1,15 @@
-import { Avatar, Box, Button, Container, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  ButtonProps,
+  Container,
+  Typography,
+  capitalize,
+  styled,
+} from "@mui/material";
 import { useEffect } from "react";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { selectUser } from "../../userSlice";
 import {
@@ -13,6 +22,67 @@ import styles from "./LayoutProfiles.module.css";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import EditIcon from "@mui/icons-material/Edit";
+import { grey } from "@mui/material/colors";
+
+const FollowButton = styled(Button)<ButtonProps>({
+  boxShadow: "none",
+  textTransform: "none",
+  fontSize: 16,
+  padding: "3px 6px",
+  border: "1px solid ",
+  lineHeight: 1.25,
+  backgroundColor: "none",
+  borderColor: "#999",
+  color: "#999",
+  fontFamily: [
+    "-apple-system",
+    "BlinkMacSystemFont",
+    '"Segoe UI"',
+    "Roboto",
+    '"Helvetica Neue"',
+    "Arial",
+    "sans-serif",
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(","),
+  "&:hover": {
+    backgroundColor: "#ccc",
+    borderColor: "#999",
+    color: "white",
+    boxShadow: "none",
+  },
+});
+
+const EditButton = styled(Button)<ButtonProps>({
+  boxShadow: "none",
+  textTransform: "none",
+  fontSize: 16,
+  padding: "3px 6px",
+  border: "1px solid ",
+  lineHeight: 1.25,
+  backgroundColor: "none",
+  borderColor: "#5cb85c",
+  color: "#5cb85c",
+  fontFamily: [
+    "-apple-system",
+    "BlinkMacSystemFont",
+    '"Segoe UI"',
+    "Roboto",
+    '"Helvetica Neue"',
+    "Arial",
+    "sans-serif",
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(","),
+  "&:hover": {
+    backgroundColor: "#5cb85c",
+    borderColor: "#5cb85c",
+    color: "white",
+    boxShadow: "none",
+  },
+});
 
 const LayoutProfile = () => {
   const dispatch = useAppDispatch();
@@ -189,65 +259,101 @@ const LayoutProfile = () => {
   useEffect(() => {
     if (!!username && username !== "") {
       dispatch(getUserProfileAsync(username));
-    }
-  }, [username]);
+    } 
+  }, [username]);  
 
   return (
     <Box className={styles.box}>
-      <Box sx={{ width: "100%", backgroundColor: "#f3f3f3", padding: "1rem" }}>
-        <Container maxWidth="xl">
-          {!isLoading && !!profile && (
-            <Box>
-              <Box className={styles.boxInfomation}>
-                <Avatar
-                  alt="Big Avatar"
-                  src={profile!.image}
-                  sx={{ width: 112, height: 112 }}
-                />
-                <Typography variant="h4">{profile!.username}</Typography>
-                <Typography variant="subtitle1">{profile!.bio}</Typography>
-              </Box>
-              <Box className={styles.boxFlexEnd}>
-                {!!currentUser &&
-                  currentUser!.username == profile!.username && (
-                    <Button className={styles.button}>
-                      <Link to="/settings" className={styles.link}>
-                        <EditIcon fontSize="small" /> Edit Profile
-                      </Link>
-                    </Button>
-                  )}
-                {!!currentUser &&
-                  currentUser!.username !== profile!.username && (
-                    <Button
-                      className={styles.button}
-                      onClick={() =>
-                        onFollowUser(profile!.username, profile!.following)
-                      }
+      
+        <Box className={styles.boxCoverContainer}>
+          <Container maxWidth="xl">
+            {/* view when pending loading */}
+            {isLoading &&(
+              <Box>
+                <Box className={styles.boxInformation}>
+                  <Avatar
+                    alt={username}
+                    src={
+                      currentUser?.username === username
+                        ? currentUser?.image
+                        : ""
+                    }
+                    sx={{ width: 112, height: 112 }}
+                  />
+                  <Typography variant="h4">{username}</Typography>
+                </Box>
+
+                <Box className={styles.boxFlexEnd}>
+                  <Link to="" className={styles.linkFixWidth}>
+                    <FollowButton
+                      size="small"
+                      variant="outlined"
+                      startIcon={<AddIcon />}
                     >
-                      {profile?.following == true ? (
-                        <>
-                          <RemoveIcon /> Unfollow{" "}
-                        </>
-                      ) : (
-                        <>
-                          <AddIcon /> Follow{" "}
-                        </>
-                      )}
-                      {profile!.username}
-                    </Button>
-                  )}
-                {!currentUser && (
-                  <Button className={styles.button}>
-                    <Link to="/register" className={styles.link}>
-                      <AddIcon /> Follow {profile?.username}
-                    </Link>
-                  </Button>
-                )}
+                      Follow {username}
+                    </FollowButton>
+                  </Link>
+                </Box>
               </Box>
-            </Box>
-          )}
-        </Container>
-      </Box>
+            )}
+            {/* view when loading completed */}
+            {!isLoading && !!profile && (
+              <Box>
+                <Box className={styles.boxInformation}>
+                  <Avatar
+                    alt="Big Avatar"
+                    src={profile!.image}
+                    sx={{ width: 112, height: 112 }}
+                  />
+                  <Typography variant="h4">{profile!.username}</Typography>
+                  <Typography variant="subtitle1">{profile!.bio}</Typography>
+                </Box>
+                <Box className={styles.boxFlexEnd}>
+                  {!!currentUser &&
+                    currentUser!.username == profile!.username && (
+                      <Link to="/settings" className={styles.linkFixWidth}>
+                        <EditButton
+                          size="small"
+                          variant="outlined"
+                          startIcon={<EditIcon />}
+                        >
+                          Edit Profile
+                        </EditButton>
+                      </Link>
+                    )}
+                  {!!currentUser &&
+                    currentUser!.username !== profile!.username && (
+                      <FollowButton
+                        onClick={() =>
+                          onFollowUser(profile!.username, profile!.following)
+                        }
+                        size="small"
+                        variant="outlined"
+                        startIcon={
+                          profile?.following ? <RemoveIcon /> : <AddIcon />
+                        }
+                      >
+                        {profile?.following ? "Unfollow " : "Follow "}
+                        {profile!.username}
+                      </FollowButton>
+                    )}
+                  {!currentUser && (
+                    <Link to="/register" className={styles.linkFixWidth}>
+                      <FollowButton
+                        size="small"
+                        variant="outlined"
+                        startIcon={<AddIcon />}
+                      >
+                        Follow {profile?.username}
+                      </FollowButton>
+                    </Link>
+                  )}
+                </Box>
+              </Box>
+            )}
+          </Container>
+        </Box>
+      
       <Outlet />
     </Box>
   );

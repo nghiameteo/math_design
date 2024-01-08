@@ -3,6 +3,7 @@ import { FollowUserParams, Profile, ProfileResponse, UserProfileState } from "..
 import { api } from "../../../app/axios-instance";
 import { RootState } from "../../../app/store";
 import { put, call, takeLatest } from "redux-saga/effects";
+import router from "../../../app/router";
 
 
 const initialState: UserProfileState = {
@@ -26,7 +27,7 @@ function* getUserProfileSaga(action: PayloadAction<string>) {
     catch (error) {
         yield put(setIsLoading(false));
         console.log('getUserProfileSaga',error);
-        
+        router.navigate('/');
     }
 }
 

@@ -14,13 +14,45 @@
     background-color: #333 !important;
     color: #fff;
 
-    .containerHeaderChild {
-      padding: 24px;
-      margin: 0;
+    .containerHeader {  
       display: flex !important;
       flex-direction: column !important;
       justify-content: center !important;
       align-items: flex-start !important;
+
+      .typoH3 {
+        color: #fff !important;
+      }
+
+      .gridContainer {
+        color: #ffffff !important;
+        margin-top: 0.5rem !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+
+        .gridItemContainer {
+          display: flex !important;
+          justify-content: center !important;
+          align-items: flex-start !important;
+          flex-direction: column !important;
+          text-align: left !important;
+
+          .linkUsername {
+            text-decoration: none;
+            color: white !important;
+            font-weight: 500;
+          }
+          .linkUsername:hover {
+            text-decoration: underline;
+            color: white !important;
+            font-weight: 700;
+          }
+          .typoDate {
+            opacity: 0.8 !important;
+            color: #bbb !important;
+          }
+        }
+      }
     }
   }
   .containerFooter {
@@ -34,19 +66,13 @@
     .boxFooter {
       width: 100%;
       border-bottom: 1px solid grey;
+      .boxTagList {
+        padding:  2rem 0 !important;
+      }
     }
   }
 }
-.linkUsername {
-  text-decoration: none;
-  color: white !important;
-  font-weight: 500;
-}
-.linkUsername:hover {
-  text-decoration: underline;
-  color: white !important;
-  font-weight: 700;
-}
+
 
 .button {
   text-transform: none !important;
