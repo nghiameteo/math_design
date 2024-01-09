@@ -10,14 +10,24 @@ interface OwnProps {
   total: number;
   page: number;
   pageSize: number;
-  onPageChange: (page: number, pageSize: number) => void;
+  onPageChange: (page: number, pageSize?: number) => void;
 }
 
-const ArticleList = ({ articles, total, page, pageSize }: OwnProps) => {
+const ArticleList = ({
+  articles,
+  total,
+  page,
+  pageSize,
+  onPageChange,
+}: OwnProps) => {
   const count: number = Math.floor(total / pageSize + 1);
   const [changePage, setChangePage] = useState(page + 1);
   const handleChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setChangePage(value);
+    onPageChange(value);
+    setTimeout(() => {
+      console.log("value", value);
+      console.log("page", page);
+    }, 3000);
   };
 
   return (
@@ -25,30 +35,31 @@ const ArticleList = ({ articles, total, page, pageSize }: OwnProps) => {
       {articles.map((article) => (
         <ArticleItem2 key={article.slug} article={article} />
       ))}
-
-      <Pagination
-        className={styles.paginationLayout}
-        variant="outlined"
-        shape="rounded"
-        hideNextButton
-        hidePrevButton
-        siblingCount={count}
-        count={count}
-        defaultPage={1}
-        page={changePage}
-        onChange={handleChange}
-        renderItem={(item) => (
-          <PaginationItem
-            {...item}
-            color="primary"
-            className={
-              item.page == changePage
-                ? styles.paginationItemActive
-                : styles.paginationItemNonActive
-            }
-          />
-        )}
-      />
+      {count > 1 && (
+        <Pagination
+          className={styles.paginationLayout}
+          variant="outlined"
+          shape="rounded"
+          hideNextButton
+          hidePrevButton
+          siblingCount={count}
+          count={count}
+          defaultPage={1}
+          page={page + 1}
+          onChange={handleChange}
+          renderItem={(item) => (
+            <PaginationItem
+              {...item}
+              color="primary"
+              className={
+                item.page == changePage
+                  ? styles.paginationItemActive
+                  : styles.paginationItemNonActive
+              }
+            />
+          )}
+        />
+      )}
     </>
   );
 };

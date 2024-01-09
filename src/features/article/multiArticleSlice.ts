@@ -18,7 +18,10 @@ export const fetchArticlesAsync = createAction<MultiArticlePagingParams>('multiA
 const fetchArticles = async (params: MultiArticlePagingParams | undefined): Promise<MultipleArticleResponse> => {
     const url = params?.onlyMyFeed ? `/articles/feed` : `/articles`;
     const limit = params?.pageSize || 10;
+    console.log('param.page', params?.page);    
     const offset = (params?.page || 1) > 1 ? ((params!.page! - 1) * limit) : 0;
+    console.log('offset' ,offset);
+    
     const queryParams = {
         tag: params?.tag,
         author: params?.author,
@@ -32,7 +35,9 @@ const fetchArticles = async (params: MultiArticlePagingParams | undefined): Prom
 function* fetchArticlesSaga(action: PayloadAction<MultiArticlePagingParams | undefined>) {
     try {
         yield put(setIsLoading(true));
+        yield put(changePage(Number(action.payload?.page) - 1));        
         const response: MultipleArticleResponse = yield call(fetchArticles, action.payload);
+        console.log('response', response);        
         yield put(loadMultiArticle(response));
         yield put(setIsLoading(false));
     }
@@ -102,10 +107,16 @@ export const multiArticleSlice = createSlice({
                 articles: state.articles.map(item => item.slug === articleChangeFavorite.slug ? articleChangeFavorite : item),
             }
         },
+        changePage: (state, action: PayloadAction<number>) => {
+            return {
+                ...state,
+                page: action.payload,
+            }
+        },
     }
 })
 
-export const { setIsLoading, loadMultiArticle, changeFavorite } = multiArticleSlice.actions;
+export const { setIsLoading, loadMultiArticle, changeFavorite, changePage } = multiArticleSlice.actions;
 
 export const selectMultiArticle = (state: RootState) => state.multiArticle;
 

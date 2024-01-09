@@ -29,6 +29,7 @@ const Feed = () => {
   const { articles, total, page, pageSize, isLoading } = feedData;
   const tag = useAppSelector(selectSingleTag);
   const [activeTab, setActiveTab] = useState<string>(TabKeys.globalFeed);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
 
   const tabItems = useMemo((): TabConfig[] => {
     const tabs: TabConfig[] = [];
@@ -51,7 +52,7 @@ const Feed = () => {
     return tabs;
   }, [isAuthorized, tag, activeTab]);
 
-  const onFilterChange = (page: number) => {
+  const onFilterPageChange = (page: number, pageSize?: number) => {
     if (activeTab === TabKeys.tagFeed) {
       dispatch(fetchArticlesAsync({ page, tag }));
     } else if (activeTab === TabKeys.yourFeed) {
@@ -64,12 +65,12 @@ const Feed = () => {
   useEffect(() => {
     if (!!tag && tag !== TabKeys.tagFeed) {
       setActiveTab(TabKeys.tagFeed);
-      onFilterChange(1);
+      onFilterPageChange(1);
     }
   }, [tag]);
 
   useEffect(() => {
-    onFilterChange(1);
+    onFilterPageChange(1);
   }, [activeTab]);
 
   useEffect(() => {
@@ -91,46 +92,48 @@ const Feed = () => {
           </Typography>
         </Container>
       </Box>
-      <Grid
-        container
-        spacing={0}
-        sx={{
-          mx: "auto",
-          ms: "auto",
-          maxWidth: "xl",
-          display: "flex",
-          gridAutoFlow: "column",
-        }}
-      >
-        <Grid xs={8} sx={{ display: { xs: "none", sm: "block" } }} item>
-          <Tabs
-            value={activeTab}
-            onChange={(_, key) => setActiveTab(key)}
-            TabIndicatorProps={{ className: styles.activeTabIndicator }}
-          >
-            {tabItems.map((item) => (
-              <Tab
-                key={item.value}
-                {...item}
-                className={item.value === activeTab ? styles.activeTab : ""}
+      <Container maxWidth='xl'>
+        <Grid
+          container
+          spacing={0}
+          sx={{
+            mx: "auto",
+            ms: "auto",
+            maxWidth: "xl",
+            display: "flex",
+            gridAutoFlow: "column",
+          }}
+        >
+          <Grid xs={8} sx={{ display: { xs: "none", sm: "block" } }} item>
+            <Tabs
+              value={activeTab}
+              onChange={(_, key) => setActiveTab(key)}
+              TabIndicatorProps={{ className: styles.activeTabIndicator }}
+            >
+              {tabItems.map((item) => (
+                <Tab
+                  key={item.value}
+                  {...item}
+                  className={item.value === activeTab ? styles.activeTab : ""}
+                />
+              ))}
+            </Tabs>
+            {isLoading && <Typography>Loading...</Typography>}
+            {!isLoading && total > 0 && (
+              <ArticleList
+                articles={articles}
+                total={total}
+                page={page}
+                pageSize={pageSize}
+                onPageChange={onFilterPageChange}
               />
-            ))}
-          </Tabs>
-          {isLoading && <Typography>Loading...</Typography>}
-          {!isLoading && total > 0 && (
-            <ArticleList
-              articles={articles}
-              total={total}
-              page={page}
-              pageSize={pageSize}
-              onPageChange={onFilterChange}
-            />
-          )}
+            )}
+          </Grid>
+          <Grid item xs={4} sx={{ display: { xs: "none", sm: "block" } }}>
+            <TagFilter />
+          </Grid>
         </Grid>
-        <Grid item xs={4} sx={{ display: { xs: "none", sm: "block" } }}>
-          <TagFilter />
-        </Grid>
-      </Grid>
+      </Container>
     </>
   );
 };
